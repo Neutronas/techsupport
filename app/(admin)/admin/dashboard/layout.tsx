@@ -25,8 +25,10 @@ export default async function DashboardLayout({
         logoURL={reMappedSettings["logo_image"].value}
         title={reMappedSettings["web_title"].value}
       />
-      <AdminSidebar />
-      <div className="p-4 sm:ml-64">{children}</div>
+      <div>
+        <AdminSidebar />
+        <div className="p-4 sm:ml-64">{children}</div>
+      </div>
     </div>
   );
 }

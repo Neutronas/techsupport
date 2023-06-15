@@ -1,46 +1,22 @@
 "use client";
-import { Sidebar, Navbar, Avatar, Dropdown } from "flowbite-react";
+import { Sidebar } from "flowbite-react";
 
-import {
-  HiChartPie,
-  HiInbox,
-  HiViewBoards,
-  HiUser,
-  HiShoppingBag,
-  HiArrowSmRight,
-  HiTable,
-} from "react-icons/hi";
+import { HiChartPie } from "react-icons/hi";
+import { TfiSettings } from "react-icons/tfi";
 
 export default function AdminSidebar() {
   return (
-    <Sidebar aria-label="Default sidebar example">
+    <Sidebar
+      aria-label="Admin sidebar"
+      className="fixed left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+    >
       <Sidebar.Items>
         <Sidebar.ItemGroup>
-          <Sidebar.Item href="#" icon={HiChartPie}>
+          <Sidebar.Item href="/admin/dashboard/" icon={HiChartPie}>
             Dashboard
           </Sidebar.Item>
-          <Sidebar.Item
-            href="#"
-            icon={HiViewBoards}
-            label="Pro"
-            labelColor="alternative"
-          >
-            Kanban
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiInbox} label="3">
-            Inbox
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiUser}>
-            Users
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiShoppingBag}>
-            Products
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiArrowSmRight}>
-            Sign In
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiTable}>
-            Sign Up
+          <Sidebar.Item href="/admin/dashboard/settings/" icon={TfiSettings}>
+            Settings
           </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>
