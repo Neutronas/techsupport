@@ -1,5 +1,4 @@
 import SettingsForm from "@/components/admin/SettingsForm";
-import { supabase } from "@/lib/supabaseClient";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 export default async function SettingsPage() {
   const supabase = createClientComponentClient();
