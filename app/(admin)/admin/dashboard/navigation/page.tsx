@@ -6,8 +6,6 @@ export default async function Page() {
   const supabase = createServerComponentClient({ cookies });
 
   const { data: navigation } = await supabase.from("SmartMenu").select("*");
-  console.log(navigation);
-  //console.log("HIHIHIIH");
 
   return <NavigationForm />;
 }
