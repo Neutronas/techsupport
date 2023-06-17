@@ -56,11 +56,10 @@ export default function AdminNavbar({
           <Dropdown.Header>
             <span className="block truncate text-sm font-medium">{email}</span>
           </Dropdown.Header>
-          <Dropdown.Item>Profile</Dropdown.Item>
-          <Dropdown.Divider />
+          {/* <Dropdown.Item>Profile</Dropdown.Item>
+          <Dropdown.Divider /> */}
           <Dropdown.Item onClick={handleLogout}>Sign out</Dropdown.Item>
         </Dropdown>
-        <Navbar.Toggle />
       </div>
     </Navbar>
   );

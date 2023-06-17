@@ -57,13 +57,18 @@ export default function SettingsForm({
     // Append each form field to formDataWithFiles
     Object.entries(formData).forEach(([key, value]) => {
       if (value instanceof FileList) {
-        formDataWithFiles.append(key, value[0]);
+        // console.log(URL.createObjectURL(value[0]));
+        formDataWithFiles.append(
+          key,
+          JSON.stringify(URL.createObjectURL(value[0]))
+        );
       } else {
         formDataWithFiles.append(key, JSON.stringify(value));
+        // formDataWithFiles.append(key, JSON.stringify(value));
       }
     });
 
-    saveSettings(formDataWithFiles);
+    saveSettings(formData);
   });
 
   const fieldAccordingToType = (setting: setting) => {
