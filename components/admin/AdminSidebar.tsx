@@ -3,6 +3,7 @@ import { Sidebar } from "flowbite-react";
 
 import { HiChartPie } from "react-icons/hi";
 import { TfiSettings } from "react-icons/tfi";
+import { FiMenu } from "react-icons/fi";
 
 export default function AdminSidebar() {
   return (
@@ -14,6 +15,10 @@ export default function AdminSidebar() {
         <Sidebar.ItemGroup>
           <Sidebar.Item href="/admin/dashboard/" icon={HiChartPie}>
             Dashboard
+          </Sidebar.Item>
+          
+          <Sidebar.Item href="/admin/dashboard/navigation/" icon={FiMenu}>
+            Navigation
           </Sidebar.Item>
           <Sidebar.Item href="/admin/dashboard/settings/" icon={TfiSettings}>
             Settings
