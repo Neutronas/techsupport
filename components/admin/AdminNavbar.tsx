@@ -36,7 +36,7 @@ export default function AdminNavbar({
     <Navbar fluid rounded>
       <Navbar.Brand href="/">
         <Image
-          src={`/${logoURL}`}
+          src={`${logoURL}`}
           className="h-8 mr-3"
           width={32}
           height={32}

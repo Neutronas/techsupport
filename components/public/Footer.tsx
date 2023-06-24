@@ -15,7 +15,7 @@ export default function Footer({ navigation, settings }: FooterProps) {
           <div className="sm:flex sm:items-center sm:justify-between">
             <Link href="/" className="flex items-center mb-4 sm:mb-0">
               <Image
-                src={`/${settings["logo_image"].value || "/logoasilas.png"}`}
+                src={`${settings["logo_image"].value || "/logoasilas.png"}`}
                 className="h-8 mr-3"
                 width={32}
                 height={32}

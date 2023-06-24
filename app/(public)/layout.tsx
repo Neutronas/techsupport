@@ -1,8 +1,9 @@
-import { supabase } from "@/lib/supabaseClient";
 import "./../globals.css";
 import { Inter } from "next/font/google";
 import Header from "@/components/public/Header";
 import Footer from "@/components/public/Footer";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,7 @@ export default async function PublicLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const supabase = createServerComponentClient({ cookies });
   const { data: navigation } = await supabase.from("navigation").select("*");
 
   const { data: settings } = await supabase.from("settings").select("*");
