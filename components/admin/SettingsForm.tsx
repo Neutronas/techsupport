@@ -4,28 +4,26 @@ import { Button, FileInput, Label, Spinner, TextInput } from "flowbite-react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 type setting = { [x: string]: any };
 interface SettingsFormProps {
   settings: { [x: string]: any }[] | null;
-  saveSettings: (formData: any) => void;
 }
 
-export default function SettingsForm({
-  settings,
-  saveSettings,
-}: SettingsFormProps) {
+export default function SettingsForm({ settings }: SettingsFormProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<FormData>();
 
   const createImagesObject = () => {
     let images: { [x: number]: string | string[] } = {};
     settings?.forEach((item) => {
       if (item.type === "image") {
-        images = { ...images, [item.id]: `/${item.value}` };
+        images = { ...images, [item.id]: `${item.value}` };
       }
     });
     return images;
@@ -33,16 +31,36 @@ export default function SettingsForm({
   const [images, setImages] = useState(createImagesObject);
   const [loading, setLoading] = useState(false);
 
-  const handleImageInputChange = (event: Event): void => {
+  const handleImageInputChange = async (event: Event): Promise<any> => {
     const input = event.target as HTMLInputElement;
-
     if (!input.files?.length) {
       return;
     }
 
     const fieldName = input.name;
     const file = input.files[0];
-    setImages({ ...images, [fieldName]: URL.createObjectURL(file) });
+    const imageInputId: string = fieldName.replace(/^file_/, "");
+    // set to empty
+    setImages({ ...images, [imageInputId]: false });
+
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await fetch("/api/image", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setImages({ ...images, [imageInputId]: data.url });
+        // @ts-ignore
+        setValue(imageInputId, data.url);
+      }
+    } catch (error) {
+      console.error("Failed to upload image:", error);
+    }
   };
 
   const titleCase = (s: string) =>
@@ -52,23 +70,16 @@ export default function SettingsForm({
 
   const submitForm = handleSubmit(async (formData) => {
     setLoading(true);
-    const formDataWithFiles = new FormData();
-
-    // Append each form field to formDataWithFiles
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value instanceof FileList) {
-        // console.log(URL.createObjectURL(value[0]));
-        formDataWithFiles.append(
-          key,
-          JSON.stringify(URL.createObjectURL(value[0]))
-        );
-      } else {
-        formDataWithFiles.append(key, JSON.stringify(value));
-        // formDataWithFiles.append(key, JSON.stringify(value));
-      }
+    const response = await fetch("/api/settings", {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
+    toast.success("Your settings are updated.");
 
-    saveSettings(formData);
+    setLoading(false);
   });
 
   const fieldAccordingToType = (setting: setting) => {
@@ -77,7 +88,7 @@ export default function SettingsForm({
         return (
           <TextInput
             key={setting.id}
-            value={setting.value}
+            defaultValue={setting.value}
             // @ts-ignore
             {...register(`${setting.id}`)}
           />
@@ -96,22 +107,36 @@ export default function SettingsForm({
       case "image":
         return (
           <>
-            <Image
-              src={`${images[setting.id]}`}
-              alt={titleCase(setting.key)}
-              width="0"
-              height="0"
-              sizes="100vw"
-              className="w-16 h-16"
-            />
+            {images[setting.id] ? (
+              <Image
+                src={`${images[setting.id]}`}
+                alt={titleCase(setting.key)}
+                width="0"
+                height="0"
+                sizes="100vw"
+                className="w-16 h-16"
+              />
+            ) : (
+              <Spinner aria-label="Uploading image" />
+            )}
+
             <FileInput
+              key={"file_" + setting.id}
+              name={`file_${setting.id}`}
+              // @ts-ignore
+              // {...register(`file_${setting.id}`)}
+              // @ts-ignore
+              onChange={handleImageInputChange}
+              accept="image/*"
+            />
+            <TextInput
               key={setting.id}
-              // value={setting.value}
+              value={`${images[setting.id]}`}
               // @ts-ignore
               {...register(`${setting.id}`)}
               // @ts-ignore
               onChange={handleImageInputChange}
-              accept="image/*"
+              className="hidden"
             />
           </>
         );

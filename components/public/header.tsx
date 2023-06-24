@@ -33,7 +33,7 @@ export default function Header({ navigation, settings }: HeaderProps) {
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <Link href="/" className="flex items-center">
             <Image
-              src={`/${settings["logo_image"].value || "/logoasilas.png"}`}
+              src={`${settings["logo_image"].value || "/logo.png"}`}
               className="h-8 mr-3"
               width={32}
               height={32}

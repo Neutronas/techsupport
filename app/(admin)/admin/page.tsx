@@ -2,9 +2,9 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { Button, Card, Label, Spinner, TextInput } from "flowbite-react";
+import toast from "react-hot-toast";
 
 type FormData = {
   email: string;
