@@ -5,13 +5,15 @@ import { NextResponse, NextRequest } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-    let formDataforDB: { id: string; value: string }[] = [];
-    for (const key in data) {
-      formDataforDB.push({ id: key, value: data[key] });
-    }
+    console.log(data);
     const supabase = createServerActionClient({ cookies });
-    const result = await supabase.from("settings").upsert(formDataforDB);
-    console.log(result);
+    const { error } = await supabase
+      .from("navigation")
+      .update({ title: data.title, href: data.href })
+      .eq("id", data.id);
+    if (error) {
+      return NextResponse.json({ success: false }, { status: 500 });
+    }
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error(error);
